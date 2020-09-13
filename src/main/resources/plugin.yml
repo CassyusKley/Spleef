@@ -1,0 +1,6 @@
+name: ESpleef
+version: ${project.version}
+main: etiocook.espleef.Main
+authors: [eTioCooK]
+commands:
+  a:
