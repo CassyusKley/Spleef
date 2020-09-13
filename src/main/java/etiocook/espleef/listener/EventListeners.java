@@ -24,6 +24,7 @@ public class EventListeners implements Listener {
         Player player = event.getPlayer();
 
         AfkManager.getInstance().setAfkTime(player.getName());
+        Bukkit.broadcastMessage("§awdwad");
     }
 
     @EventHandler
