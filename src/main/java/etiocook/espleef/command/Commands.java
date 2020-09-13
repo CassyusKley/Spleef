@@ -1,4 +1,4 @@
-package etiocook.espleef;
+package etiocook.espleef.command;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
