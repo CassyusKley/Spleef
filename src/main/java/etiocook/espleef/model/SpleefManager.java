@@ -1,5 +1,6 @@
 package etiocook.espleef.model;
 
+import etiocook.espleef.enums.SpleefState;
 import lombok.Getter;
 
 import java.util.LinkedHashSet;
@@ -9,6 +10,7 @@ public class SpleefManager {
 
     private static SpleefManager instance;
     @Getter final Set<String> spleefList;
+    @Getter private SpleefState spleefState;
 
     public static SpleefManager getInstance() {
         if (instance == null) instance = new SpleefManager();
@@ -18,6 +20,7 @@ public class SpleefManager {
     public SpleefManager() {
         this.spleefList = new LinkedHashSet<>();
     }
+
 
 }
 
