@@ -45,7 +45,7 @@ public class EventListeners implements Listener {
             spleefManager.getSpleefList().forEach(names -> {
                 if (names.contains(player.getName()) && names.contains(damager.getName())) {
 
-                    damager.sendMessage(Messages.NOT_STARTED);
+                    damager.sendMessage(Messages.PVP_DISABLED);
                     event.setCancelled(true);
                 }
             });
