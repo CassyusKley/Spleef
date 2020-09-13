@@ -60,9 +60,9 @@ public class EventListeners implements Listener {
 
         Player player = event.getPlayer();
 
-        spleefManager.getSpleefList().forEach(names -> {
-            if (names.contains(player.getName()) && spleefManager.getSpleefState() == SpleefState.RUNNING) {
-                if (player.getLocation().getBlock().isLiquid()) {
+        if (player.getLocation().getBlock().isLiquid()) {
+            spleefManager.getSpleefList().forEach(names -> {
+                if (names.contains(player.getName()) && spleefManager.getSpleefState() == SpleefState.RUNNING) {
 
                     if (spleefManager.getSpleefList().size() > 1) {
                         spleefManager.remove(player.getName());
@@ -78,9 +78,8 @@ public class EventListeners implements Listener {
 
                 }
 
-            }
-
-        });
+            });
+        }
 
     }
 
