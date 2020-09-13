@@ -3,6 +3,7 @@ package etiocook.espleef.listener;
 import etiocook.espleef.enums.SpleefState;
 import etiocook.espleef.model.SpleefManager;
 import etiocook.espleef.utils.Messages;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 public class EventListeners implements Listener {
 
@@ -50,6 +52,35 @@ public class EventListeners implements Listener {
                 }
             });
         }
+
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event) {
+
+        Player player = event.getPlayer();
+
+        spleefManager.getSpleefList().forEach(names -> {
+            if (names.contains(player.getName()) && spleefManager.getSpleefState() == SpleefState.RUNNING) {
+                if (player.getLocation().getBlock().isLiquid()) {
+
+                    if (spleefManager.getSpleefList().size() > 1) {
+                        spleefManager.remove(player.getName());
+                        player.getActivePotionEffects().forEach(potionEffect -> player.removePotionEffect(potionEffect.getType()));
+                        player.getInventory().clear();
+                        player.performCommand("spawn");
+
+                        Player playersList = Bukkit.getPlayer(names);
+
+                        playersList.sendMessage("§eo Jogador §f" + player.getName() + " foi desclassificado");
+                        return;
+                    }
+
+                }
+
+            }
+
+        });
 
     }
 

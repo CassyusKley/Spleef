@@ -21,6 +21,13 @@ public class SpleefManager {
         this.spleefList = new LinkedHashSet<>();
     }
 
+    public boolean contains(String name) {
+        return getSpleefList().contains(name);
+    }
+
+    public void remove(String name){
+        getSpleefList().remove(name);
+    }
 
 }
 
