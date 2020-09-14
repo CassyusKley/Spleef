@@ -2,6 +2,7 @@ package etiocook.espleef.model;
 
 import com.google.common.base.Strings;
 import etiocook.espleef.Main;
+import etiocook.espleef.utils.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,28 +26,27 @@ public class AfkManager {
     }
 
     public void setAfkTime(String name) {
-        this.afkTimeMap.put(name, System.currentTimeMillis());
+        this.afkTimeMap.put(name, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(15));
     }
 
     public void check() {
 
         Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getInstance(), () -> this.afkTimeMap.keySet().forEach(names -> {
-            long time = System.currentTimeMillis() - this.afkTimeMap.get(names);
-            int seconds = (int) TimeUnit.MILLISECONDS.toSeconds(time) % 60;
 
-            if (seconds >= 1 && seconds < 11) {
-                Bukkit.broadcastMessage(" §e§lAFK TIME: " + getProgressBar(seconds, 10, 20, '▋', ChatColor.GREEN, ChatColor.RED) + " " + seconds + "/10");
+            Player target = Bukkit.getPlayer(names);
+            if (!hasAfk(target.getName())) {
+               ActionBar actionBar = new ActionBar("§cMove, or the block below you will be removed in §e" + getTime(target.getName()) + " seconds");
+               actionBar.show(target);
                 return;
             }
 
-            Player target = Bukkit.getPlayer(names);
             Block block = target.getLocation().getBlock().getRelative(BlockFace.DOWN);
             BlockState blockState = block.getState();
 
+            this.afkTimeMap.remove(target.getName());
+            Bukkit.broadcastMessage("AWDAWD");
             block.setType(Material.AIR);
             blockState.update(true);
-         //   Bukkit.broadcastMessage("§eVoce foi retirado do evento pro está afk");
-            this.afkTimeMap.remove(names);
 
         }), 20, 20);
 
@@ -64,5 +64,13 @@ public class AfkManager {
         return Strings.repeat("" + completedColor + symbol, progressBars) + Strings.repeat("" + notCompletedColor + symbol, count);
     }
 
+    private Integer getTime(String names) {
+        long time = this.afkTimeMap.get(names) - System.currentTimeMillis();
+       return (int) TimeUnit.MILLISECONDS.toSeconds(time) % 60;
+    }
+
+    public boolean hasAfk(String playerName) {
+        return this.afkTimeMap.get(playerName) >= System.currentTimeMillis();
+    }
 
 }
